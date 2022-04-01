@@ -1,0 +1,1 @@
+# lachta-avaliable-slots-bot
