@@ -1,5 +1,4 @@
 from os import environ
-from typing import Any
 
 
 def get_doctors() -> list[str]:

@@ -1,6 +1,5 @@
 import logging
-from pprint import pprint
-
+from termcolor import colored
 import requests
 
 import helpers
@@ -28,6 +27,9 @@ def get_doctors_schedule():
         response = requests.request("POST", url=url, headers=headers, data=payload)
         if response.status_code != 200:
             raise requests.exceptions.HTTPError(response=response)
-        pprint(response.text)
+        if response.text == '':
+            raise requests.exceptions.RequestException(response=response)
+        print(colored(response.json(), "green"))
     except requests.exceptions.RequestException as e:
         logging.error(f"request failed with code {e.response.status_code}")
+        exit(-1)
