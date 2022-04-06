@@ -1,6 +1,7 @@
 import logging
-from termcolor import colored
+
 import requests
+from termcolor import colored
 
 import helpers
 
@@ -29,7 +30,19 @@ def get_doctors_schedule():
             raise requests.exceptions.HTTPError(response=response)
         if response.text == '':
             raise requests.exceptions.RequestException(response=response)
-        print(colored(response.json(), "green"))
+        response_obj = response.json()
+        print(colored(response_obj, "green"))
     except requests.exceptions.RequestException as e:
         logging.error(f"request failed with code {e.response.status_code}")
         exit(-1)
+
+
+class DoctorSchedule:
+    def __init__(self, _schedule: dict, doctor_id: int):
+        self.doctor_id = doctor_id
+        self._result_schedule = {}
+        for k_clinic_id, v_clinic in _schedule.items():
+            if v_clinic is not None:
+                for k_schedule, v_schedule in v_clinic.items():
+                    if str(doctor_id) in v_schedule.keys():
+                        pass #TODO:
