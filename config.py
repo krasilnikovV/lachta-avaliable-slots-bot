@@ -13,6 +13,6 @@ def get_clinics() -> list[str]:
 
 
 is_online = bool(environ.get("IS_ONLINE", 0))
-oms = bool(environ.get("OMS", 0))
+dms = bool(environ.get("DMS", 0))
 doctors = get_doctors()
 clinics = get_clinics()

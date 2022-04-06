@@ -19,6 +19,6 @@ url = url_util.Url(scheme="https", host="lahtaclinic.ru", path="/app/app.php")
 
 method = "get_doctors_schedule_available_for_clinics"
 is_online = config.is_online
-oms = config.oms
+dms = config.dms
 list_clinics = list(filter(partial(is_not, None), [clinics.get(c.lower(), None) for c in config.clinics]))
 list_doctors = list(filter(partial(is_not, None), [doctors.get(d.lower(), None) for d in config.doctors]))
