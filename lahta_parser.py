@@ -32,6 +32,7 @@ def get_doctors_schedule():
             raise requests.exceptions.RequestException(response=response)
         response_obj = response.json()
         print(colored(response_obj, "green"))
+        return response_obj
     except requests.exceptions.RequestException as e:
         logging.error(f"request failed with code {e.response.status_code}")
         exit(-1)
@@ -40,9 +41,21 @@ def get_doctors_schedule():
 class DoctorSchedule:
     def __init__(self, _schedule: dict, doctor_id: int):
         self.doctor_id = doctor_id
+        self._doctor_id_str = str(doctor_id)
         self._result_schedule = {}
         for k_clinic_id, v_clinic in _schedule.items():
             if v_clinic is not None:
                 for k_schedule, v_schedule in v_clinic.items():
-                    if str(doctor_id) in v_schedule.keys():
-                        pass #TODO:
+                    if v_schedule is not None and self._doctor_id_str in v_schedule.keys():
+                        doctor_schedule = v_schedule.pop(self._doctor_id_str)
+                        if self._result_schedule.get(self._doctor_id_str, None) is None:
+                            self._result_schedule[self._doctor_id_str] = {}
+                        if self._result_schedule[self._doctor_id_str].get(str(k_clinic_id), None) is None:
+                            self._result_schedule[self._doctor_id_str][str(k_clinic_id)] = {}
+                        if self._result_schedule[self._doctor_id_str][str(k_clinic_id)].get(k_schedule, None) is None:
+                            self._result_schedule[self._doctor_id_str][str(k_clinic_id)][k_schedule] = []
+                        for time in doctor_schedule:
+                            self._result_schedule[self._doctor_id_str][str(k_clinic_id)][k_schedule].append(
+                                time.get("from", None)
+                            )
+        return

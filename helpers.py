@@ -13,7 +13,8 @@ clinics = {
 
 doctors = {
     "костин антон сергеевич": 4480,
-    "пальчикова екатерина игоревна": 5576
+    "пальчикова екатерина игоревна": 5576,
+    # "aaaa": 113   TODO: remove this
 }
 
 url = url_util.Url(scheme="https", host="lahtaclinic.ru", path="/app/app.php")
