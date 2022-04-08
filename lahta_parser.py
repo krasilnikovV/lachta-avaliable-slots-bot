@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 import requests
 from termcolor import colored
@@ -40,6 +41,7 @@ def get_doctors_schedule():
 
 class DoctorSchedule:
     def __init__(self, _schedule: dict, doctor_id: int):
+        self.__schedule = None
         self.doctor_id = doctor_id
         self._doctor_id_str = str(doctor_id)
         self._result_schedule = {}
@@ -59,3 +61,27 @@ class DoctorSchedule:
                                 time.get("from", None)
                             )
         return
+
+    def get_pretty_schedule(self):
+        if not self._result_schedule:
+            return None
+        if self.__schedule:
+            return self.__schedule
+        self.__schedule = {}
+        for k_doctor, v_doctor in self._result_schedule.items():
+            doc = helpers.doctors_ids[k_doctor]
+            self.__schedule[doc] = {}
+            self.__schedule[doc]["url"] = helpers.url_util.Url(
+                scheme=helpers.url.scheme,
+                host=helpers.url.host,
+                path='/app/',
+                fragment=f"doctor={k_doctor}"
+            )
+            for k_clinic, v_clinic in v_doctor.items():
+                cli = helpers.clinics_ids[k_clinic]
+                self.__schedule[doc][cli] = []
+                for k_data, v_data in v_clinic.items():
+                    for time in v_data:
+                        dt = datetime.strptime(k_data + " " + time, "%Y-%m-%d %H:%M")
+                        self.__schedule[doc][cli].append(dt)
+        return self.__schedule

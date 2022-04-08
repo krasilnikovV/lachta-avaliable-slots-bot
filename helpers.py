@@ -11,10 +11,21 @@ clinics = {
     "ковенский": 259
 }
 
+clinics_ids = {
+    '228': "Савушкина",
+    '259': "Ковенский"
+}
+
 doctors = {
     "костин антон сергеевич": 4480,
     "пальчикова екатерина игоревна": 5576,
-    # "aaaa": 113   TODO: remove this
+    #"aaaa": 113   #TODO: remove this
+}
+
+doctors_ids = {
+    '4480': "Костин Антон Сергеевич (Психиатр)",
+    '5576': "Пальчикова Екатерина Игоревна (Психиатр)",
+    #'113': "ГРААaaa"   #TODO: remove this
 }
 
 url = url_util.Url(scheme="https", host="lahtaclinic.ru", path="/app/app.php")
