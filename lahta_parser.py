@@ -76,7 +76,7 @@ class DoctorSchedule:
                 host=helpers.url.host,
                 path='/app/',
                 fragment=f"doctor={k_doctor}"
-            )
+            ).url
             for k_clinic, v_clinic in v_doctor.items():
                 cli = helpers.clinics_ids[k_clinic]
                 self.__schedule[doc][cli] = []
