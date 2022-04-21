@@ -62,12 +62,12 @@ def build_message(schedule: dict):
     return message
 
 
-def send_schedule(user_id: int, msg: str = "", schedule=None):
+def send_schedule(user_id: int, msg: str = "", schedule=None, identity=""):
     if schedule is None:
         schedule = {}
     msg = msg if msg else build_message(schedule)
     try:
-        get_object_response = s3.get_object(Bucket='lahta-state', Key='object_test')
+        get_object_response = s3.get_object(Bucket='lahta-state', Key=identity)
         response_body = get_object_response['Body'].read()
     except:
         response_body = b''
@@ -80,4 +80,4 @@ def send_schedule(user_id: int, msg: str = "", schedule=None):
         user_id,
         msg
     )
-    s3.put_object(Bucket='lahta-state', Key='object_test', Body=msg)
+    s3.put_object(Bucket='lahta-state', Key=identity, Body=msg)
