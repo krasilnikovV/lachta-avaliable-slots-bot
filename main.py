@@ -14,7 +14,7 @@ environ['TZ'] = 'Europe/Moscow'
 global tt
 
 
-def main():
+def main(*args, **kwargs):
     import lahta_parser
     import config
     import telegram_notifire
