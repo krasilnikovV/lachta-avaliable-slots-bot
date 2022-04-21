@@ -26,47 +26,39 @@ except Exception as ex:
 
 
 def build_message(schedule: dict):
-    message_array = ['']
-    doctor_str = ''
-    clinic_str = ''
-    date_str = ''
-    time_str = ''
     message = ''
+
+    msg_dict = {}
     for k_doctor, v_doctor in schedule.items():
-        doctor_str += '*ДОКТОР*: \n'
-        doctor_str += f'[{k_doctor}]({v_doctor.get("url", "")})\n'
+        _doc = msg_dict['*ДОКТОР*: \n' + f'[{k_doctor}]({v_doctor.get("url", "")})\n'] = {}
         for k_clinic, v_clinic in v_doctor.items():
             if k_clinic == "url":
                 continue
-            clinic_str += f'*КЛИНИКА:* _{k_clinic}_\n'
+            _clinic = _doc[f'*КЛИНИКА:* _{k_clinic}_\n'] = {}
             date = ""
             i = 0
-            times = ''
-
-            for dt in reversed(v_clinic):
+            _date = None
+            for dt in v_clinic:
                 if date != f'*__{dt.strftime("%a, %d %b %y")}__*\n':
-                    if times != '':
-                        temp = [t.strip() for t in times.split(',')]
-                        time_str += '\t'
-                        time_str += ', '.join(temp)[:-2]
-                        time_str += '\n'
-                        times = ''
-                    if i != 0:
-                        message_array.append(time_str)
-                        time_str = ''
-                        message_array.append(date_str if message_array[-1] else '')
-                        date_str = ''
                     date = f'*__{dt.strftime("%a, %d %b %y")}__*\n'
-                    date_str += date
+                    _date = _clinic[f'*__{dt.strftime("%a, %d %b %y")}__*\n'] = []
                     if i >= 7:
                         break
                     i += 1
-                times += f'{dt.strftime("%H:%M")},'
-            message_array.append(clinic_str if message_array[-1] else '')
-            clinic_str = ''
-        message_array.append(doctor_str if message_array[-1] else '')
-        date_str = ''
-    message = ''.join(reversed(message_array))
+                _date.append(f'{dt.strftime("%H:%M")}')
+
+    for k_doctor, v_doctor in msg_dict.items():
+        if v_doctor:
+            message += k_doctor
+            for k_clinic, v_clinic in v_doctor.items():
+                if v_clinic:
+                    message += k_clinic
+                    for k_date, v_date in v_clinic.items():
+                        if v_date:
+                            message += k_date
+                            message += '\t'
+                            message += ', '.join(v_date)
+                            message += '\n'
     return message
 
 
