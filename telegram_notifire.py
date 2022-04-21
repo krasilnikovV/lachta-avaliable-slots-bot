@@ -76,8 +76,12 @@ def send_schedule(user_id: int, msg: str = "", schedule=None, identity=""):
     print(bytes(msg, 'UTF-8'))
     if response_body and str(response_body.decode('UTF-8')) == msg:
         return
-    bot.send_message(
-        user_id,
-        msg
-    )
+    try:
+        bot.send_message(
+            user_id,
+            msg
+        )
+    except telebot.apihelper.ApiTelegramException as ex:
+        logging.error(str(ex), exc_info=ex)
+
     s3.put_object(Bucket='lahta-state', Key=identity, Body=msg)
