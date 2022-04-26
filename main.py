@@ -31,6 +31,3 @@ def main(*args, **kwargs):
                     logging.error(str(ex.__cause__), exc_info=ex)
                     pass
 
-
-if __name__ == "main":
-    main()
